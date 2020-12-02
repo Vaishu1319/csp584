@@ -40,65 +40,6 @@ public class DoctorList extends HttpServlet {
 			hm.putAll(alldoctors);
 			name = "";
 		}
-		/*else
-		{
-		  if(ProductName.equals("htc"))
-		  {
-			for(Map.Entry<String,Doctor> entry : alldoctors.entrySet())
-				{
-				if(entry.getValue().getRetailer().equals("HTC"))
-				 {
-					 hm.put(entry.getValue().getId(),entry.getValue());
-				 }
-				}
-			name = "HTC";
-		  }
-		  else if(ProductName.equals("oculus"))
-		  {
-			for(Map.Entry<String,Doctor> entry : alldoctors.entrySet())
-				{
-				if(entry.getValue().getRetailer().equals("Oculus"))
-				 {
-					 hm.put(entry.getValue().getId(),entry.getValue());
-				 }
-				}	
-			name = "Oculus";
-		  }
-		  else if(ProductName.equals("samsung"))
-		  {
-			for(Map.Entry<String,Doctor> entry : alldoctors.entrySet())
-				{
-				if(entry.getValue().getRetailer().equals("Samsung"))
-				 {
-					 hm.put(entry.getValue().getId(),entry.getValue());
-				 }
-				}
-			name = "Samsung";
-		  }
-		  else if(ProductName.equals("homido"))
-		  {
-			for(Map.Entry<String,Doctor> entry : alldoctors.entrySet())
-				{
-				if(entry.getValue().getRetailer().equals("Homido"))
-				 {
-					 hm.put(entry.getValue().getId(),entry.getValue());
-				 }
-				}
-			name = "Homido";
-		  }
-		  else if(ProductName.equals("sony"))
-		  {
-			for(Map.Entry<String,Doctor> entry : alldoctors.entrySet())
-				{
-				if(entry.getValue().getRetailer().equals("Sony"))
-				 {
-					 hm.put(entry.getValue().getId(),entry.getValue());
-				 }
-				}
-			name = "Sony";
-		  }
-		}*/
-
 		/* Header, Left Navigation Bar are Printed.
 
 		All the Doctors and Doctors information are dispalyed in the Content Section
@@ -109,43 +50,28 @@ public class DoctorList extends HttpServlet {
 		utility.printHtml("Header.html");
 		utility.printHtml("LeftNavigationBar.html");
 		pw.print("<div id='content'><div class='post'><h2 class='title meta'>");
-		pw.print("<a style='font-size: 32px;color: #8f0419 !important;'>"+name+" Doctor Lists</a>");
-		pw.print("</h2><div class='entry'>");
+		pw.print("<a style='font-size: 32px;color: #8f0419 !important;'>Doctor Lists</a>");
+		pw.print("</h2><div class='entry'><table class='gridtable'>");
+		int i = 1; int size = hm.size();
 		for(Map.Entry<String, Doctor> entry : hm.entrySet()){
 			Doctor doctor = entry.getValue();
 			String type = doctor.getType();
 			if (type.equalsIgnoreCase("Doctor")) {
-				pw.print("</br>");
-				pw.print("<div class='info_card'><div class='card_image'><div class='flex'>");
-				pw.print("<img src='images/doctor/"+doctor.getImage()+"' alt='' style='height:140px;'/></div>");
-				pw.print("<div class='card_image1'>");
+				if(i%2==1) pw.print("<tr>");
 				String dname = doctor.getName().substring(0, 1).toUpperCase() + doctor.getName().substring(1);
-				pw.print("<span><h3 style='text-align:left !important'>Dr. " + dname + "</h3></span>");
-				pw.print("<span><h4>"+ doctor.getSpeciality() + "</h4></span>");
-				pw.print("<span><h4>"+ doctor.getExperience() + " years experience overall</h4></span>");
-				pw.print("<span><h4>"+ doctor.getAddress() + "</h4></span>");
-				pw.print("<span><h4>$"+ doctor.getFees() + " Consultation fee at clinic</h4></span></div></div></div>");
-				/*pw.print("<form method='post' action='ViewReview'>"+"<input type='hidden' name='name' value='"+entry.getKey()+"'>"+
-						"<input type='hidden' name='type' value='Virtual Reality'>"+
-						"<input type='hidden' name='maker' value='"+name+"'>"+
-						"<input type='hidden' name='access' value=''>"+
-						"<input type='submit' value='View Review' class='btnreview'></form></li>");
-				pw.print("</br></br>");
-				pw.print("<ul><li><form method='post' action='Cart'>" +
-						"<input type='hidden' name='name' value='"+entry.getKey()+"'>"+
-						"<input type='hidden' name='type' value='doctors'>"+
-						"<input type='hidden' name='maker' value='"+name+"'>"+
-						"<input type='hidden' name='access' value=''>"+
-						"<input type='submit' class='btnbuy' value='Buy Now'></form></li></ul>");
-				pw.print("<ul><li><form method='post' action='WriteReview'>"+"<input type='hidden' name='name' value='"+entry.getKey()+"'>"+
-						"<input type='hidden' name='type' value='Virtual Reality'>"+
-						"<input type='hidden' name='maker' value='"+name+"'>"+
-						"<input type='hidden' name='price' value='"+doctor.getPrice()+"'>"+
-						"<input type='hidden' name='access' value=''>"+
-						"<input type='submit' value='Write Review' class='btnreview'></form></li></ul>");*/
+				pw.print("<td class='vtd'><a href='Detail?ID=" + doctor.getId() + "'><b>Dr. " + dname + "</b></a><br>" + doctor.getSpeciality() + "<br>" + doctor.getExperience() + " years experience overall<br>"
+				+ doctor.getStAddress() + ", " + doctor.getCity() + ", " + doctor.getState() + ", " + doctor.getZipCode() + "<br>"
+				+ doctor.getFees() + "$ Consulatation Fee");
+				pw.print("<form method='post' action='ViewReview'>"+"<input type='hidden' name='name' value='"+doctor.getName()+"'>"+
+					"<input type='hidden' name='type' value='"+doctor.getType()+"'>"+
+					"<input type='hidden' name='maker' value='"+doctor.getName()+"'>"+
+					"<input type='submit' value='View Review' class='vbtn'></form></td>");
+				if(i%2==0 || i == size) pw.print("</tr>");
+				i++;
 			}
 			
-		}		
+		}
+		pw.print("</table>");		
 		pw.print("</div></div></div>");		
 		utility.printHtml("Footer.html");
 		

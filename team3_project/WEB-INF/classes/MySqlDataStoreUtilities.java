@@ -220,27 +220,32 @@ public static void insertProduct(String ProductType,String Id,String productName
 	}	
 }
 
-public static void insertDoctor(String id, String name,String address,String speciality,String image,String experience,Double fees, String type)
+public static void insertProvider(String id, String name, String staddress, String city, String state, String zipcode, String speciality, String image, String experience, Double fees, String type, String latitude, String longitude)
 {
 	try
 	{	
-		System.out.println("string name" + name);
+		//System.out.println("string name" + name);
 		
 		getConnection();
-		String insertIntoDoctorsListQuery = "INSERT INTO doctorslist(id,name,address,speciality,image,experience,fees, type) "
-		+ "VALUES (?,?,?,?,?,?,?,?);";
+		String insertIntoProvidersListQuery = "INSERT INTO providerslist(id,name,staddress,city,state,zipcode,speciality,image,experience,fees, type,latitude,longitude) "
+		+ "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?);";
 		
-		System.out.println("inside insert doctor");
+		//System.out.println("inside insert doctor");
 		
-		PreparedStatement pst = conn.prepareStatement(insertIntoDoctorsListQuery);
+		PreparedStatement pst = conn.prepareStatement(insertIntoProvidersListQuery);
 		pst.setString(1,id);
 		pst.setString(2,name);
-		pst.setString(3,address);
-		pst.setString(4,speciality);
-		pst.setString(5,image);
-		pst.setString(6,experience);
-		pst.setDouble(7,fees);
-		pst.setString(8,type);
+		pst.setString(3,staddress);
+		pst.setString(4,city);
+		pst.setString(5,state);
+		pst.setString(6,zipcode);
+		pst.setString(7,speciality);
+		pst.setString(8,image);
+		pst.setString(9,experience);
+		pst.setDouble(10,fees);
+		pst.setString(11,type);
+		pst.setString(12,latitude);
+		pst.setString(13,longitude);
 		pst.execute();
 	}
 	catch(Exception e)
@@ -257,13 +262,36 @@ public static HashMap<String,Doctor> getDoctors()
 		getConnection();
 		
 		Statement stmt=conn.createStatement();
-		String selectDoctor="select * from doctorslist";
+		String selectDoctor="select * from providerslist";
 		ResultSet rs = stmt.executeQuery(selectDoctor);
 		while(rs.next())
 		{	
-			Doctor doctor = new Doctor(rs.getString("name"),rs.getString("address"),rs.getString("speciality"),rs.getString("image"),rs.getString("experience"),rs.getDouble("fees"),rs.getString("type"));
+			Doctor doctor = new Doctor(rs.getString("name"),rs.getString("staddress"),rs.getString("city"),rs.getString("state"),rs.getString("zipcode"),rs.getString("speciality"),rs.getString("image"),rs.getString("experience"),rs.getDouble("fees"),rs.getString("type"),rs.getString("latitude"),rs.getString("longitude"));
 			hm.put(rs.getString("Id"), doctor);
 			doctor.setId(rs.getString("Id"));
+		}
+	}
+	catch(Exception e)
+	{
+	}
+	return hm;			
+}
+
+public static HashMap<String,HealthInsurance> getHealthInsurances()
+{	
+	HashMap<String,HealthInsurance> hm=new HashMap<String,HealthInsurance>();
+	try 
+	{
+		getConnection();
+		
+		Statement stmt=conn.createStatement();
+		String selectHealthInsurance="select * from providerslist";
+		ResultSet rs = stmt.executeQuery(selectHealthInsurance);
+		while(rs.next())
+		{	
+			HealthInsurance healthinsurance = new HealthInsurance(rs.getString("name"),rs.getString("staddress"),rs.getString("city"),rs.getString("state"),rs.getString("zipcode"),rs.getString("speciality"),rs.getString("image"),rs.getString("experience"),rs.getDouble("fees"),rs.getString("type"),rs.getString("latitude"),rs.getString("longitude"));
+			hm.put(rs.getString("Id"), healthinsurance);
+			healthinsurance.setId(rs.getString("Id"));
 		}
 	}
 	catch(Exception e)
@@ -280,11 +308,11 @@ public static HashMap<String,Hospital> getHospitals()
 		getConnection();
 		
 		Statement stmt=conn.createStatement();
-		String selectDoctor="select * from doctorslist";
+		String selectDoctor="select * from providerslist";
 		ResultSet rs = stmt.executeQuery(selectDoctor);
 		while(rs.next())
 		{	
-			Hospital hospital = new Hospital(rs.getString("name"),rs.getString("address"),rs.getString("speciality"),rs.getString("image"),rs.getString("experience"),rs.getDouble("fees"),rs.getString("type"));
+			Hospital hospital = new Hospital(rs.getString("name"),rs.getString("staddress"),rs.getString("city"),rs.getString("state"),rs.getString("zipcode"),rs.getString("speciality"),rs.getString("image"),rs.getString("experience"),rs.getDouble("fees"),rs.getString("type"),rs.getString("latitude"),rs.getString("longitude"));
 			hm.put(rs.getString("Id"), hospital);
 			hospital.setId(rs.getString("Id"));
 		}
@@ -295,23 +323,21 @@ public static HashMap<String,Hospital> getHospitals()
 	return hm;			
 }
 
-public static HashMap<String,Tv> getTVs()
+public static HashMap<String,HealthClub> getHealthClubs()
 {	
-	HashMap<String,Tv> hm=new HashMap<String,Tv>();
+	HashMap<String,HealthClub> hm=new HashMap<String,HealthClub>();
 	try 
 	{
 		getConnection();
 		
-		String selectTV="select * from  Productdetails where ProductType=?";
-		PreparedStatement pst = conn.prepareStatement(selectTV);
-		pst.setString(1,"Tv");
-		ResultSet rs = pst.executeQuery();
-	
+		Statement stmt=conn.createStatement();
+		String selectHealthClub="select * from providerslist";
+		ResultSet rs = stmt.executeQuery(selectHealthClub);
 		while(rs.next())
-		{
-			Tv tv = new Tv(rs.getString("productName"),rs.getDouble("productPrice"),rs.getString("productImage"),rs.getString("productManufacturer"),rs.getString("productCondition"),rs.getDouble("productDiscount"));
-				hm.put(rs.getString("Id"), tv);
-				tv.setId(rs.getString("Id"));
+		{	
+			HealthClub healthclub = new HealthClub(rs.getString("name"),rs.getString("staddress"),rs.getString("city"),rs.getString("state"),rs.getString("zipcode"),rs.getString("speciality"),rs.getString("image"),rs.getString("experience"),rs.getDouble("fees"),rs.getString("type"),rs.getString("latitude"),rs.getString("longitude"));
+			hm.put(rs.getString("Id"), healthclub);
+			healthclub.setId(rs.getString("Id"));
 		}
 	}
 	catch(Exception e)
@@ -320,24 +346,21 @@ public static HashMap<String,Tv> getTVs()
 	return hm;			
 }
 
-
-public static HashMap<String,SoundSystem> getSoundSystems()
+public static HashMap<String,Pharmacy> getPharmacys()
 {	
-	HashMap<String,SoundSystem> hm=new HashMap<String,SoundSystem>();
+	HashMap<String,Pharmacy> hm=new HashMap<String,Pharmacy>();
 	try 
 	{
 		getConnection();
 		
-		String selectSoundSystem="select * from  Productdetails where ProductType=?";
-		PreparedStatement pst = conn.prepareStatement(selectSoundSystem);
-		pst.setString(1,"Sound System");
-		ResultSet rs = pst.executeQuery();
-	
+		Statement stmt=conn.createStatement();
+		String selectPharmacy="select * from providerslist";
+		ResultSet rs = stmt.executeQuery(selectPharmacy);
 		while(rs.next())
-		{	SoundSystem soundsystem = new SoundSystem(rs.getString("productName"),rs.getDouble("productPrice"),rs.getString("productImage"),rs.getString("productManufacturer"),rs.getString("productCondition"),rs.getDouble("productDiscount"));
-				hm.put(rs.getString("Id"), soundsystem);
-				soundsystem.setId(rs.getString("Id"));
-
+		{	
+			Pharmacy pharmacy = new Pharmacy(rs.getString("name"),rs.getString("staddress"),rs.getString("city"),rs.getString("state"),rs.getString("zipcode"),rs.getString("speciality"),rs.getString("image"),rs.getString("experience"),rs.getDouble("fees"),rs.getString("type"),rs.getString("latitude"),rs.getString("longitude"));
+			hm.put(rs.getString("Id"), pharmacy);
+			pharmacy.setId(rs.getString("Id"));
 		}
 	}
 	catch(Exception e)
@@ -345,211 +368,6 @@ public static HashMap<String,SoundSystem> getSoundSystems()
 	}
 	return hm;			
 }
-
-
-public static HashMap<String,Phone> getPhones()
-{	
-	HashMap<String,Phone> hm=new HashMap<String,Phone>();
-	try 
-	{
-		getConnection();
-		
-		String selectPhone="select * from  Productdetails where ProductType=?";
-		PreparedStatement pst = conn.prepareStatement(selectPhone);
-		pst.setString(1,"Phone");
-		ResultSet rs = pst.executeQuery();
-	
-		while(rs.next())
-		{	Phone phone = new Phone(rs.getString("productName"),rs.getDouble("productPrice"),rs.getString("productImage"),rs.getString("productManufacturer"),rs.getString("productCondition"),rs.getDouble("productDiscount"));
-				hm.put(rs.getString("Id"), phone);
-				phone.setId(rs.getString("Id"));
-
-		}
-	}
-	catch(Exception e)
-	{
-	}
-	return hm;			
-}
-
-
-public static HashMap<String,Laptop> getLaptops()
-{	
-	HashMap<String,Laptop> hm=new HashMap<String,Laptop>();
-	try 
-	{
-		getConnection();
-		
-		String selectLaptop="select * from  Productdetails where ProductType=?";
-		PreparedStatement pst = conn.prepareStatement(selectLaptop);
-		pst.setString(1,"Laptop");
-		ResultSet rs = pst.executeQuery();
-	
-		while(rs.next())
-		{	Laptop laptop = new Laptop(rs.getString("productName"),rs.getDouble("productPrice"),rs.getString("productImage"),rs.getString("productManufacturer"),rs.getString("productCondition"),rs.getDouble("productDiscount"));
-				hm.put(rs.getString("Id"), laptop);
-				laptop.setId(rs.getString("Id"));
-
-		}
-	}
-	catch(Exception e)
-	{
-	}
-	return hm;			
-}
-
-
-public static HashMap<String,VoiceAssistant> getVoiceAssistants()
-{	
-	HashMap<String,VoiceAssistant> hm=new HashMap<String,VoiceAssistant>();
-	try 
-	{
-		getConnection();
-		
-		String selectVoiceAssistant="select * from  Productdetails where ProductType=?";
-		PreparedStatement pst = conn.prepareStatement(selectVoiceAssistant);
-		pst.setString(1,"Voice Assistant");
-		ResultSet rs = pst.executeQuery();
-	
-		while(rs.next())
-		{	VoiceAssistant voiceassistant = new VoiceAssistant(rs.getString("productName"),rs.getDouble("productPrice"),rs.getString("productImage"),rs.getString("productManufacturer"),rs.getString("productCondition"),rs.getDouble("productDiscount"));
-				hm.put(rs.getString("Id"), voiceassistant);
-				voiceassistant.setId(rs.getString("Id"));
-
-		}
-	}
-	catch(Exception e)
-	{
-	}
-	return hm;			
-}
-
-
-public static HashMap<String,FitnessWatch> getFitnessWatches()
-{	
-	HashMap<String,FitnessWatch> hm=new HashMap<String,FitnessWatch>();
-	try 
-	{
-		getConnection();
-		
-		String selectFitnessWatch="select * from  Productdetails where ProductType=?";
-		PreparedStatement pst = conn.prepareStatement(selectFitnessWatch);
-		pst.setString(1,"Fitness Watch");
-		ResultSet rs = pst.executeQuery();
-	
-		while(rs.next())
-		{	FitnessWatch fitnesswatch = new FitnessWatch(rs.getString("productName"),rs.getDouble("productPrice"),rs.getString("productImage"),rs.getString("productManufacturer"),rs.getString("productCondition"),rs.getDouble("productDiscount"));
-				hm.put(rs.getString("Id"), fitnesswatch);
-				fitnesswatch.setId(rs.getString("Id"));
-
-		}
-	}
-	catch(Exception e)
-	{
-	}
-	return hm;			
-}
-
-
-public static HashMap<String,SmartWatch> getSmartWatches()
-{	
-	HashMap<String,SmartWatch> hm=new HashMap<String,SmartWatch>();
-	try 
-	{
-		getConnection();
-		
-		String selectSmartWatch="select * from  Productdetails where ProductType=?";
-		PreparedStatement pst = conn.prepareStatement(selectSmartWatch);
-		pst.setString(1,"Smart Watch");
-		ResultSet rs = pst.executeQuery();
-	
-		while(rs.next())
-		{	SmartWatch smartwatch = new SmartWatch(rs.getString("productName"),rs.getDouble("productPrice"),rs.getString("productImage"),rs.getString("productManufacturer"),rs.getString("productCondition"),rs.getDouble("productDiscount"));
-				hm.put(rs.getString("Id"), smartwatch);
-				smartwatch.setId(rs.getString("Id"));
-
-		}
-	}
-	catch(Exception e)
-	{
-	}
-	return hm;			
-}
-
-
-public static HashMap<String,HeadPhone> getHeadPhones()
-{	
-	HashMap<String,HeadPhone> hm=new HashMap<String,HeadPhone>();
-	try 
-	{
-		getConnection();
-		
-		String selectHeadPhone="select * from  Productdetails where ProductType=?";
-		PreparedStatement pst = conn.prepareStatement(selectHeadPhone);
-		pst.setString(1,"HeadPhone");
-		ResultSet rs = pst.executeQuery();
-	
-		while(rs.next())
-		{	HeadPhone headphone = new HeadPhone(rs.getString("productName"),rs.getDouble("productPrice"),rs.getString("productImage"),rs.getString("productManufacturer"),rs.getString("productCondition"),rs.getDouble("productDiscount"));
-				hm.put(rs.getString("Id"), headphone);
-				headphone.setId(rs.getString("Id"));
-		}
-	}
-	catch(Exception e)
-	{
-	}
-	return hm;			
-}
-
-
-public static HashMap<String,VirtualReality> getVirtualRealitys()
-{	
-	HashMap<String,VirtualReality> hm=new HashMap<String,VirtualReality>();
-	try 
-	{
-		getConnection();
-		
-		String selectVirtualReality="select * from  Productdetails where ProductType=?";
-		PreparedStatement pst = conn.prepareStatement(selectVirtualReality);
-		pst.setString(1,"Virtual Reality");
-		ResultSet rs = pst.executeQuery();
-	
-		while(rs.next())
-		{	VirtualReality virtualreality = new VirtualReality(rs.getString("productName"),rs.getDouble("productPrice"),rs.getString("productImage"),rs.getString("productManufacturer"),rs.getString("productCondition"),rs.getDouble("productDiscount"));
-				hm.put(rs.getString("Id"), virtualreality);
-				virtualreality.setId(rs.getString("Id"));
-		}
-	}
-	catch(Exception e)
-	{
-	}
-	return hm;			
-}
-
-public static HashMap<String,PetTracker> getPetTrackers()
-{
-	HashMap<String,PetTracker> hm=new HashMap<String,PetTracker>();
-	try
-	{
-		getConnection();
-
-		String selectPetTracker="select * from  Productdetails where ProductType=?";
-		PreparedStatement pst = conn.prepareStatement(selectPetTracker);
-		pst.setString(1,"Pet Tracker");
-		ResultSet rs = pst.executeQuery();
-
-		while(rs.next())
-		{	PetTracker pettracker = new PetTracker(rs.getString("productName"),rs.getDouble("productPrice"),rs.getString("productImage"),rs.getString("productManufacturer"),rs.getString("productCondition"),rs.getDouble("productDiscount"));
-			hm.put(rs.getString("Id"), pettracker);
-			pettracker.setId(rs.getString("Id"));
-		}
-	}
-	catch(Exception e)
-	{
-	}
-	return hm;
-}
-
 
 public static String addproducts(String ProductType,String Id,String productName,double productPrice,String productImage,String productManufacturer,
 	String productCondition,double productDiscount,double rebateAmount,Integer count,String prod)
@@ -561,35 +379,36 @@ public static String addproducts(String ProductType,String Id,String productName
 		String addProductQurey = "INSERT INTO  Productdetails(ProductType,Id,productName,productPrice,productImage,productManufacturer,productCondition,productDiscount,rebateAmount,count)" +
 		"VALUES (?,?,?,?,?,?,?,?,?,?);";
 
-			PreparedStatement pst = conn.prepareStatement(addProductQurey);
-			pst.setString(1,ProductType);
-			pst.setString(2,Id);
-			pst.setString(3,productName);
-			pst.setDouble(4,productPrice);
-			pst.setString(5,productImage);
-			pst.setString(6,productManufacturer);
-			pst.setString(7,productCondition);
-			pst.setDouble(8,productDiscount);
-			pst.setDouble(9,rebateAmount);
-			pst.setInt(10,count);
-			pst.executeUpdate();
+		PreparedStatement pst = conn.prepareStatement(addProductQurey);
+		pst.setString(1,ProductType);
+		pst.setString(2,Id);
+		pst.setString(3,productName);
+		pst.setDouble(4,productPrice);
+		pst.setString(5,productImage);
+		pst.setString(6,productManufacturer);
+		pst.setString(7,productCondition);
+		pst.setDouble(8,productDiscount);
+		pst.setDouble(9,rebateAmount);
+		pst.setInt(10,count);
+		pst.executeUpdate();
 
-			try{
-				if (!prod.isEmpty())
-				{
-					String addaprodacc =  "INSERT INTO  Product_accessories(productName,accessoriesName)" +
-					"VALUES (?,?);";
-					PreparedStatement pst1 = conn.prepareStatement(addaprodacc);
-					pst1.setString(1,prod);
-					pst1.setString(2,Id);
-					pst1.executeUpdate();
-				}
-			}catch(Exception e)
+		try{
+			if (!prod.isEmpty())
 			{
-				msg = "Error while adding the product";
-				e.printStackTrace();
-		
-			}	
+				String addaprodacc =  "INSERT INTO  Product_accessories(productName,accessoriesName)" +
+				"VALUES (?,?);";
+				PreparedStatement pst1 = conn.prepareStatement(addaprodacc);
+				pst1.setString(1,prod);
+				pst1.setString(2,Id);
+				pst1.executeUpdate();
+			}
+		}
+		catch(Exception e)
+		{
+			msg = "Error while adding the product";
+			e.printStackTrace();
+	
+		}	
 	}
 	catch(Exception e)
 	{
@@ -607,28 +426,26 @@ public static String updateproducts(String ProductType,String Id,String productN
 		
 		getConnection();
 		String updateProductQurey = "UPDATE Productdetails SET productName=?,productPrice=?,productImage=?,productManufacturer=?,productCondition=?,productDiscount=?,rebateAmount=?,count=? where Id =?;" ;
-		
 		   
-				        			
-			PreparedStatement pst = conn.prepareStatement(updateProductQurey);
-			
-			pst.setString(1,productName);
-			pst.setDouble(2,productPrice);
-			pst.setString(3,productImage);
-			pst.setString(4,productManufacturer);
-			pst.setString(5,productCondition);
-			pst.setDouble(6,productDiscount);
-			pst.setDouble(7,rebateAmount);
-			pst.setInt(8,count);
-			pst.setString(9,Id);
-			pst.executeUpdate();
+		PreparedStatement pst = conn.prepareStatement(updateProductQurey);
+		
+		pst.setString(1,productName);
+		pst.setDouble(2,productPrice);
+		pst.setString(3,productImage);
+		pst.setString(4,productManufacturer);
+		pst.setString(5,productCondition);
+		pst.setDouble(6,productDiscount);
+		pst.setDouble(7,rebateAmount);
+		pst.setInt(8,count);
+		pst.setString(9,Id);
+		pst.executeUpdate();
 	}
 	catch(Exception e)
 	{
 		msg = "Product cannot be updated";
 		e.printStackTrace();	
 	}
- return msg;	
+	return msg;	
 }
 
 
@@ -651,7 +468,257 @@ public static String deleteproducts(String Id)
 	return msg;
 }
 
+public static String[] getLatLong(String zipCode)
+{   
+	//System.out.println("Inside Mysql zipCode: " + zipCode);
+	String latlon[] = new String[2];
+	try
+	{	
+		getConnection();
+		String getLatLongQuery = "select * from latlonlist where zipCode=?";
+		PreparedStatement pst = conn.prepareStatement(getLatLongQuery);
+		pst.setString(1, zipCode);
+		ResultSet rs = pst.executeQuery();
+		while (rs.next()) {
+		//	System.out.println("Inside while loop");
+			latlon[0] = rs.getString("latitude");
+			latlon[1] = rs.getString("longitude");
+		}
+	}
+	catch(Exception e)
+	{
+	}
+	//System.out.println("after while loop: " + latlon);
+	return latlon;
+}
 
+public static HashMap<String,Provider> getProviders(String pType, String zipCode)
+{	
+	//System.out.println("inside mysql getProviders");
+	HashMap<String,Provider> hm=new HashMap<String,Provider>();
+	try 
+	{
+		//System.out.println("pType in mysql:" + pType);
+		getConnection();
+		String selectProvider = "select * from providerslist where type=? and zipCode=?";
+		PreparedStatement pst = conn.prepareStatement(selectProvider);
+		pst.setString(1, pType);
+		pst.setString(2, zipCode);
+		ResultSet rs = pst.executeQuery();
+		while(rs.next())
+		{	
+			Provider provider = new Provider(rs.getString("name"),rs.getString("staddress"),rs.getString("city"),rs.getString("state"),rs.getString("zipcode"),rs.getString("speciality"),rs.getString("image"),rs.getString("experience"),rs.getDouble("fees"),rs.getString("type"),rs.getString("latitude"),rs.getString("longitude"));
+			hm.put(rs.getString("Id"), provider);
+			provider.setId(rs.getString("Id"));
+		}
+	}
+	catch(Exception e)
+	{
+	}
+	return hm;			
+}
+
+public static HashMap<String,Provider> getDetails(String id)
+{	
+	HashMap<String,Provider> hm=new HashMap<String,Provider>();
+	try 
+	{
+		getConnection();
+		String selectProvider = "select * from providerslist where id=?";
+		PreparedStatement pst = conn.prepareStatement(selectProvider);
+		pst.setString(1, id);
+		ResultSet rs = pst.executeQuery();
+		while(rs.next())
+		{	
+			Provider provider = new Provider(rs.getString("name"),rs.getString("staddress"),rs.getString("city"),rs.getString("state"),rs.getString("zipcode"),rs.getString("speciality"),rs.getString("image"),rs.getString("experience"),rs.getDouble("fees"),rs.getString("type"),rs.getString("latitude"),rs.getString("longitude"));
+			hm.put(rs.getString("Id"), provider);
+			provider.setId(rs.getString("Id"));
+		}
+	}
+	catch(Exception e)
+	{
+	}
+	return hm;			
+}
+
+public static HashMap<String,String[]> selectBooking(String cid)
+{   
+	HashMap<String,String[]> hm = new HashMap<String,String[]>();
+	int count=0;
+	try
+	{	
+		getConnection();
+		String getBookingQuery = "select * from bookinglist where cid=?";
+		PreparedStatement pst = conn.prepareStatement(getBookingQuery);
+		pst.setString(1, cid);
+		ResultSet rs = pst.executeQuery();
+		while (rs.next()) {
+			String bookings[] = new String[6];
+			bookings[0] = rs.getString("pname");
+			bookings[1] = rs.getString("date");
+			bookings[2] = rs.getString("time");
+			bookings[3] = rs.getString("crn");
+			bookings[4] = rs.getString("fullname");
+			bookings[5] = rs.getString("ptype");
+			hm.put(rs.getString("crn"), bookings);
+			count++;
+		}
+	}
+	catch(Exception e)
+	{
+	}
+	//System.out.println("mysql count: " + count);
+	return hm;
+}
+
+public static String getBooking(String FullName, String Date, String Time, String PId)
+{	
+	String res = "No";
+	try 
+	{
+		getConnection();
+		String selectBooking = "select * from bookinglist where fullname=? and date=? and time=? and pid=?";
+		PreparedStatement pst = conn.prepareStatement(selectBooking);
+		pst.setString(1, FullName);
+		pst.setString(2, Date);
+		pst.setString(3, Time);
+		pst.setString(4, PId);
+		ResultSet rs = pst.executeQuery();
+		while(rs.next())
+		{	
+			res = "Yes";
+		}
+	}
+	catch(Exception e)
+	{
+	}
+	return res;			
+}
+
+public static String insertBooking(String FullName, String Date, String Time, String PName, String PId, String Crn, String userid, String PType)
+{	
+	String msg = "Successfully added appointment";
+	try
+	{	
+		getConnection();
+		String insertIntoBookingListQuery = "INSERT INTO bookinglist(fullname,date,time,pname,pid,crn,cid,ptype) "
+		+ "VALUES (?,?,?,?,?,?,?,?);";
+		
+		PreparedStatement pst = conn.prepareStatement(insertIntoBookingListQuery);
+		pst.setString(1,FullName);
+		pst.setString(2,Date);
+		pst.setString(3,Time);
+		pst.setString(4,PName);
+		pst.setString(5,PId);
+		pst.setString(6,Crn);
+		pst.setString(7,userid);
+		pst.setString(8,PType);
+		pst.execute();
+	}
+	catch(Exception e)
+	{
+		msg = "Error while adding appointment";
+		e.printStackTrace();
+	}				
+	return msg;
+}
+
+public static String deleteBooking(String CId, String bookingName)
+{
+	String msg = "Successfully deleted appointment";
+	try
+	{
+		getConnection();
+		String deleteBookingQuery ="Delete from bookinglist where crn=? and pname=?";
+		PreparedStatement pst = conn.prepareStatement(deleteBookingQuery);
+		pst.setString(1,CId);
+		pst.setString(2,bookingName);
+		pst.executeUpdate();
+	}
+	catch(Exception e)
+	{
+		msg = "Error while deleting appointment";
+		e.printStackTrace();	
+	}
+	return msg;
+}
+
+public static String getWishlist(String username, String PName, String PId, String PType)
+{	
+	String res = "No";
+	try 
+	{
+		getConnection();
+		String selectWishlist = "select * from wishlist where username=? and pname=? and pid=? and ptype=?";
+		PreparedStatement pst = conn.prepareStatement(selectWishlist);
+		pst.setString(1, username);
+		pst.setString(2, PName);
+		pst.setString(3, PId);
+		pst.setString(4, PType);
+		ResultSet rs = pst.executeQuery();
+		while(rs.next())
+		{	
+			res = "Yes";
+		}
+	}
+	catch(Exception e)
+	{
+	}
+	return res;			
+}
+
+public static String insertWishlist(String username, String PName, String PId, String PType, String PAddress)
+{	
+	String msg = "Successfully added to wishlist";
+	try
+	{	
+		getConnection();
+		String insertIntoWishlistQuery = "INSERT INTO wishlist(username,pname,pid,ptype,paddress) "
+		+ "VALUES (?,?,?,?,?);";
+		
+		PreparedStatement pst = conn.prepareStatement(insertIntoWishlistQuery);
+		pst.setString(1,username);
+		pst.setString(2,PName);
+		pst.setString(3,PId);
+		pst.setString(4,PType);
+		pst.setString(5,PAddress);
+		pst.execute();
+	}
+	catch(Exception e)
+	{
+		msg = "Error while adding to wishlist";
+		e.printStackTrace();
+	}				
+	return msg;
+}
+
+public static HashMap<String,String[]> selectWishlist(String cid)
+{   
+	HashMap<String,String[]> hm = new HashMap<String,String[]>();
+	int count=0;
+	try
+	{	
+		getConnection();
+		String getWishlistQuery = "select * from wishlist where username=?";
+		PreparedStatement pst = conn.prepareStatement(getWishlistQuery);
+		pst.setString(1, cid);
+		ResultSet rs = pst.executeQuery();
+		while (rs.next()) {
+			String wishlists[] = new String[5];
+			wishlists[0] = rs.getString("username");
+			wishlists[1] = rs.getString("pname");
+			wishlists[2] = rs.getString("pid");
+			wishlists[3] = rs.getString("ptype");
+			wishlists[4] = rs.getString("paddress");
+			hm.put(rs.getString("pid"), wishlists);
+			count++;
+		}
+	}
+	catch(Exception e)
+	{
+	}
+	return hm;
+}
 
 public static HashMap<String, Product> getInventoryProducts()
 {
@@ -692,23 +759,18 @@ public static String UpdateInventory(String orderName)
 {
     String msg = "Product is updated successfully";
 	try{
-
 		getConnection();
 		String updateProductQurey = "UPDATE Productdetails SET count=count-1 where productName =?;" ;
-
-
-
-			PreparedStatement pst = conn.prepareStatement(updateProductQurey);
-
-			pst.setString(1,orderName);
-			pst.executeUpdate();
+		PreparedStatement pst = conn.prepareStatement(updateProductQurey);
+		pst.setString(1,orderName);
+		pst.executeUpdate();
 	}
 	catch(Exception e)
 	{
 		msg = "Product cannot be updated";
 		e.printStackTrace();
 	}
- return msg;
+	return msg;
 }
 
 
@@ -836,6 +898,7 @@ public static HashMap<String, Product> getDailySales()
 	}
 	return products;
 }
+
 
 
 }

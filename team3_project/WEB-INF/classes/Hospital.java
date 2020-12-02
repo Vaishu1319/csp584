@@ -19,21 +19,31 @@ import javax.servlet.http.HttpServletResponse;
 public class Hospital extends HttpServlet{
 	private String id;
 	private String name;
-	private String address;
+	private String staddress;
+	private String city;
+	private String state;
+	private String zipcode;
 	private String image;
 	private String speciality;
 	private String experience;
-	private double fees;
 	private String type;
+	private double fees;
+	private String latitude;
+	private String longitude;
 	
-	public Hospital(String name, String address, String speciality, String image, String experience, double fees, String type){
+	public Hospital(String name, String staddress, String city, String state, String zipcode, String speciality, String image, String experience, double fees, String type, String latitude, String longitude){
 		this.name=name;
-		this.address=address;
+		this.staddress=staddress;
+		this.city=city;
+		this.state=state;
+		this.zipcode=zipcode;
 		this.image=image;
 		this.speciality=speciality;
 		this.experience = experience;
 		this.fees = fees;
 		this.type = type;
+		this.latitude = latitude;
+		this.longitude = longitude;
 	}
 	
 	public Hospital(){
@@ -70,11 +80,29 @@ public class Hospital extends HttpServlet{
 	public void setSpeciality(String speciality) {
 		this.speciality = speciality;
 	}
-	public String getAddress() {
-		return address;
+	public String getStAddress() {
+		return staddress;
 	}
-	public void setAddress(String address) {
-		this.address = address;
+	public void setStAddress(String staddress) {
+		this.staddress = staddress;
+	}
+	public String getCity() {
+		return city;
+	}
+	public void setCity(String city) {
+		this.city = city;
+	}
+	public String getState() {
+		return state;
+	}
+	public void setState(String state) {
+		this.state = state;
+	}
+	public String getZipCode() {
+		return zipcode;
+	}
+	public void setZipCode(String zipcode) {
+		this.zipcode = zipcode;
 	}
 	public String getExperience() {
 		return experience;
@@ -87,5 +115,17 @@ public class Hospital extends HttpServlet{
 	}
 	public void setType(String type) {
 		this.type = type;
+	}
+	public String getLatitude() {
+		return latitude;
+	}
+	public void setLatitude(String latitude) {
+		this.latitude = latitude;
+	}
+	public String getLongitude() {
+		return longitude;
+	}
+	public void setLongitude(String longitude) {
+		this.longitude = longitude;
 	}
 }

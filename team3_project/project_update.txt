@@ -1,0 +1,25 @@
+i have to create a table
+lat-lon , zipcode
+
+heatmap - lat-lon - fetch doctor and show in map - when press the doctor page will appear displaying more details ---- DONE
+
+TA -- ask data with limits -- 20 
+
+
+admin - manage - add, delete, update
+
+reviews - mongo db -- DONE
+
+carousel - based on reviews we will display top 5 rated doctors, hospital etc
+
+customer - account - doctor page -> button -> save the doctor details ---> wishlist ---- DONE
+
+trending
+
+
+Header - enter zip code page - map with details - click on doctor - doctor page with details ---- DONE
+Booking & Cancelling Appointment ---- DONE
+Account - DONE
+
+
+

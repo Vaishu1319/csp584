@@ -58,6 +58,7 @@ public class Utilities extends HttpServlet{
 					case "customer": // user
 						result = result + "<li><a><span class='glyphicon'>Hello,"+username+"</span></a></li>"
 						+ "<li><a href='Account'><span class='glyphicon'>Account</span></a></li>"
+						+ "<li><a href='Wishlist'><span class='glyphicon'>Wishlist</span></a></li>"
 						+ "<li><a href='Logout'><span class='glyphicon'>Logout</span></a></li>"
 						+ "</ul></div></div>";
 					break;
@@ -208,76 +209,7 @@ public class Utilities extends HttpServlet{
 			OrdersHashMap.orders.put(username(), arr);
 		}
 		ArrayList<OrderItem> orderItems = OrdersHashMap.orders.get(username());
-		System.out.println("type of product:" + type);
-		if(type.equals("tvs")){
-			Tv tv;
-			tv = SaxParserDataStore.tvs.get(name);
-			OrderItem orderitem = new OrderItem(tv.getName(), tv.getPrice(), tv.getImage(), tv.getRetailer());
-			orderItems.add(orderitem);
-		}
-		if(type.equals("soundsystems")){
-			SoundSystem soundsystem;
-			soundsystem = SaxParserDataStore.soundsystems.get(name);
-			OrderItem orderitem = new OrderItem(soundsystem.getName(), soundsystem.getPrice(), soundsystem.getImage(), soundsystem.getRetailer());
-			orderItems.add(orderitem);
-		}
-		if(type.equals("phones")){
-			Phone phone = null;
-			phone = SaxParserDataStore.phones.get(name);
-			OrderItem orderitem = new OrderItem(phone.getName(), phone.getPrice(), phone.getImage(), phone.getRetailer());
-			orderItems.add(orderitem);
-		}
-		if(type.equals("laptops")){
-			Laptop laptop = null;
-			laptop = SaxParserDataStore.laptops.get(name);
-			OrderItem orderitem = new OrderItem(laptop.getName(), laptop.getPrice(), laptop.getImage(), laptop.getRetailer());
-			orderItems.add(orderitem);
-		}
-		if(type.equals("voiceassistants")){	
-			VoiceAssistant voiceassistant = SaxParserDataStore.voiceassistants.get(name); 
-			OrderItem orderitem = new OrderItem(voiceassistant.getName(), voiceassistant.getPrice(), voiceassistant.getImage(), voiceassistant.getRetailer());
-			orderItems.add(orderitem);
-		}
-		if(type.equals("fitnesswatches")){
-			FitnessWatch fitnesswatch = null;
-			fitnesswatch = SaxParserDataStore.fitnesswatches.get(name);
-			OrderItem orderitem = new OrderItem(fitnesswatch.getName(), fitnesswatch.getPrice(), fitnesswatch.getImage(), fitnesswatch.getRetailer());
-			orderItems.add(orderitem);
-		}
-		if(type.equals("smartwatches")){
-			SmartWatch smartwatch = null;
-			smartwatch = SaxParserDataStore.smartwatches.get(name);
-			OrderItem orderitem = new OrderItem(smartwatch.getName(), smartwatch.getPrice(), smartwatch.getImage(), smartwatch.getRetailer());
-			orderItems.add(orderitem);
-		}
-		if(type.equals("headphones")){
-			HeadPhone headphone = null;
-			headphone = SaxParserDataStore.headphones.get(name);
-			OrderItem orderitem = new OrderItem(headphone.getName(), headphone.getPrice(), headphone.getImage(), headphone.getRetailer());
-			orderItems.add(orderitem);
-		}
-		if(type.equals("virtualrealitys")){
-			VirtualReality virtualreality = null;
-			virtualreality = SaxParserDataStore.virtualrealitys.get(name);
-			OrderItem orderitem = new OrderItem(virtualreality.getName(), virtualreality.getPrice(), virtualreality.getImage(), virtualreality.getRetailer());
-			orderItems.add(orderitem);
-		}
-		if(type.equals("pettrackers")){
-			PetTracker pettracker = null;
-			pettracker = SaxParserDataStore.pettrackers.get(name);
-			OrderItem orderitem = new OrderItem(pettracker.getName(), pettracker.getPrice(), pettracker.getImage(), pettracker.getRetailer());
-			orderItems.add(orderitem);
-		}
-		if(type.equals("accessories")){	
-			Accessory accessory = SaxParserDataStore.accessories.get(name); 
-			OrderItem orderitem = new OrderItem(accessory.getName(), accessory.getPrice(), accessory.getImage(), accessory.getRetailer());
-			orderItems.add(orderitem);
-		}
-		if(type.equals("warranty")){	 
-			OrderItem orderitem = new OrderItem("Warranty", 100.0, "abc.jpg", "Warranty");
-			orderItems.add(orderitem);
-		}
-		
+		System.out.println("type of product:" + type);		
 	}
 	// store the payment details for orders
 	public void storePayment(int orderId, String orderName,double orderPrice,String userAddress,String creditCardNo,String FirstName,String LastName,
@@ -320,10 +252,9 @@ public class Utilities extends HttpServlet{
 	}
 
 
-	public String storeReview(String PName,String PCategory,String PPrice,String MName,String RName,String  Rzip,String RCity,String RState,String ProductOnSale,
-		String MRebate,String UID,String UAge,String UGender,String UOccupation,String RRating,String RDate,String RText){
+	public String storeReview(String PName, String PType, String RName, String Rzip, String RCity, String RState, String UAge, String UGender, String UOccupation, String RRating, String RDate, String RText){
 		
-		String message=MongoDBDataStoreUtilities.insertReview(username(),PName,PCategory,PPrice,MName,RName,Rzip,RCity,RState,ProductOnSale,MRebate,UID,UAge,UGender,UOccupation,RRating,RDate,RText);
+		String message = MongoDBDataStoreUtilities.insertReview(username(),PName,PType,RName,Rzip,RCity,RState,UAge,UGender,UOccupation,RRating,RDate,RText);
 		
 		if(!message.equals("Successfull"))
 		{ 
@@ -351,192 +282,11 @@ public class Utilities extends HttpServlet{
 				reviews.put(PName, arr);
 			}
 			ArrayList<Review> listReview = reviews.get(PName);		
-			Review review = new Review(username(),PName,PCategory,PPrice,MName,RName,Rzip,RCity,RState,ProductOnSale,MRebate,UID,UAge,UGender,UOccupation,RRating,RDate,RText);
+			Review review = new Review(username(),PName,PType,RName,Rzip,RCity,RState,UAge,UGender,UOccupation,RRating,RDate,RText);
 			listReview.add(review);	
 				
 				// add Reviews into database
 			return "Successfull";	
 		}
-	}
-
-	
-	/* tvs Functions returns the Hashmap with all tvs in the store.*/
-
-	public HashMap<String, Tv> getTvs(){
-			HashMap<String, Tv> hm = new HashMap<String, Tv>();
-			hm.putAll(SaxParserDataStore.tvs);
-			return hm;
-	}
-
-	/* soundsystems Functions returns the Hashmap with all soundsystems in the store.*/
-
-	public HashMap<String, SoundSystem> getSoundSystems(){
-			HashMap<String, SoundSystem> hm = new HashMap<String, SoundSystem>();
-			hm.putAll(SaxParserDataStore.soundsystems);
-			return hm;
-	}
-	
-	/* phones Functions returns the  Hashmap with all Phones in the store.*/
-
-	public HashMap<String, Phone> getPhones(){
-			HashMap<String, Phone> hm = new HashMap<String, Phone>();
-			hm.putAll(SaxParserDataStore.phones);
-			return hm;
-	}
-	
-	/* laptops Functions returns the Hashmap with all Laptop in the store.*/
-
-	public HashMap<String, Laptop> getLaptops(){
-			HashMap<String, Laptop> hm = new HashMap<String, Laptop>();
-			hm.putAll(SaxParserDataStore.laptops);
-			return hm;
-	}
-
-	/* voiceassistants Functions returns the Hashmap with all VoiceAssistants in the store.*/
-
-	public HashMap<String, VoiceAssistant> getVoiceAssistants(){
-			HashMap<String, VoiceAssistant> hm = new HashMap<String, VoiceAssistant>();
-			hm.putAll(SaxParserDataStore.voiceassistants);
-			return hm;
-	}
-
-	/* fitnesswatches Functions returns the Hashmap with all FitnessWatch in the store.*/
-
-	public HashMap<String, FitnessWatch> getFitnessWatches(){
-			HashMap<String, FitnessWatch> hm = new HashMap<String, FitnessWatch>();
-			hm.putAll(SaxParserDataStore.fitnesswatches);
-			return hm;
-	}
-
-	/* smartwatches Functions returns the Hashmap with all SmartWatch in the store.*/
-
-	public HashMap<String, SmartWatch> getSmartWatches(){
-			HashMap<String, SmartWatch> hm = new HashMap<String, SmartWatch>();
-			hm.putAll(SaxParserDataStore.smartwatches);
-			return hm;
-	}
-
-	/* headphones Functions returns the Hashmap with all HeadPhone in the store.*/
-
-	public HashMap<String, HeadPhone> getHeadPhones(){
-			HashMap<String, HeadPhone> hm = new HashMap<String, HeadPhone>();
-			hm.putAll(SaxParserDataStore.headphones);
-			return hm;
-	}
-
-	/* virtualrealitys Functions returns the Hashmap with all virtualreality in the store.*/
-
-	public HashMap<String, VirtualReality> getVirtualRealitys(){
-			HashMap<String, VirtualReality> hm = new HashMap<String, VirtualReality>();
-			hm.putAll(SaxParserDataStore.virtualrealitys);
-			return hm;
-	}
-	
-	/* pettrackers Functions returns the Hashmap with all pettracker in the store.*/
-
-	public HashMap<String, PetTracker> getPetTrackers(){
-			HashMap<String, PetTracker> hm = new HashMap<String, PetTracker>();
-			hm.putAll(SaxParserDataStore.pettrackers);
-			return hm;
-	}
-	
-	/* getProducts Functions returns the Arraylist of tvs in the store.*/
-
-	public ArrayList<String> getProductsTvs(){
-		ArrayList<String> ar = new ArrayList<String>();
-		for(Map.Entry<String, Tv> entry : getTvs().entrySet()){			
-			ar.add(entry.getValue().getName());
-		}
-		return ar;
-	}
-
-	/* getProducts Functions returns the Arraylist of soundsystems in the store.*/
-
-	public ArrayList<String> getProductsSoundSystems(){
-		ArrayList<String> ar = new ArrayList<String>();
-		for(Map.Entry<String, SoundSystem> entry : getSoundSystems().entrySet()){			
-			ar.add(entry.getValue().getName());
-		}
-		return ar;
-	}
-	
-	/* getProducts Functions returns the Arraylist of phones in the store.*/
-
-	public ArrayList<String> getProductsPhones(){		
-		ArrayList<String> ar = new ArrayList<String>();
-		for(Map.Entry<String, Phone> entry : getPhones().entrySet()){
-			ar.add(entry.getValue().getName());
-		}
-		return ar;
-	}
-	
-	/* getProducts Functions returns the Arraylist of Laptops in the store.*/
-
-	public ArrayList<String> getProductsLaptops(){		
-		ArrayList<String> ar = new ArrayList<String>();
-		for(Map.Entry<String, Laptop> entry : getLaptops().entrySet()){
-			ar.add(entry.getValue().getName());
-		}
-		return ar;
-	}
-
-	/* getProducts Functions returns the Arraylist of VoiceAssistants in the store.*/
-	
-	public ArrayList<String> getProductsVoiceAssistants(){		
-		ArrayList<String> ar = new ArrayList<String>();
-		for(Map.Entry<String, VoiceAssistant> entry : getVoiceAssistants().entrySet()){
-			ar.add(entry.getValue().getName());
-		}
-		return ar;
-	}
-
-	/* getProducts Functions returns the Arraylist of FitnessWatches in the store.*/
-
-	public ArrayList<String> getProductsFitnessWatches(){		
-		ArrayList<String> ar = new ArrayList<String>();
-		for(Map.Entry<String, FitnessWatch> entry : getFitnessWatches().entrySet()){
-			ar.add(entry.getValue().getName());
-		}
-		return ar;
-	}
-	
-	/* getProducts Functions returns the Arraylist of SmartWatches in the store.*/
-
-	public ArrayList<String> getProductsSmartWatches(){		
-		ArrayList<String> ar = new ArrayList<String>();
-		for(Map.Entry<String, SmartWatch> entry : getSmartWatches().entrySet()){
-			ar.add(entry.getValue().getName());
-		}
-		return ar;
-	}
-
-	/* getProducts Functions returns the Arraylist of Headphones in the store.*/
-
-	public ArrayList<String> getProductsHeadphones(){		
-		ArrayList<String> ar = new ArrayList<String>();
-		for(Map.Entry<String, HeadPhone> entry : getHeadPhones().entrySet()){
-			ar.add(entry.getValue().getName());
-		}
-		return ar;
-	}
-
-	/* getProducts Functions returns the Arraylist of VirtualRealitys in the store.*/
-
-	public ArrayList<String> getProductsVirtualRealitys(){		
-		ArrayList<String> ar = new ArrayList<String>();
-		for(Map.Entry<String, VirtualReality> entry : getVirtualRealitys().entrySet()){
-			ar.add(entry.getValue().getName());
-		}
-		return ar;
-	}
-	
-	/* getProducts Functions returns the Arraylist of PetTrackers in the store.*/
-
-	public ArrayList<String> getProductsPetTrackers(){		
-		ArrayList<String> ar = new ArrayList<String>();
-		for(Map.Entry<String, PetTracker> entry : getPetTrackers().entrySet()){
-			ar.add(entry.getValue().getName());
-		}
-		return ar;
 	}
 }

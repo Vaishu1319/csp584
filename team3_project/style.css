@@ -163,6 +163,43 @@ hr {
 	/* margin-left: 300px; */
 }
 
+#floating-panel {
+  position: absolute;
+  top: 10px;
+  left: 25%;
+  z-index: 5;
+  background-color: #fff;
+  padding: 5px;
+  border: 1px solid #999;
+  text-align: center;
+  font-family: "Roboto", "sans-serif";
+  line-height: 30px;
+  padding-left: 10px;
+}
+
+#floating-panel {
+  background-color: #fff;
+  border: 1px solid #999;
+  left: 25%;
+  padding: 5px;
+  position: absolute;
+  top: 10px;
+  z-index: 5;
+}
+
+#map {
+  height: 100%;
+}
+
+#zip1 {
+	width: 100%;
+	padding: 12px 20px;
+	margin: 8px 0;
+	box-sizing: border-box;
+	border: 2px solid red;
+	border-radius: 4px;
+}
+
 /* Products Display on the Main Content Screen */
 .post {
 	width: 850px;
@@ -215,6 +252,12 @@ hr {
 .post .entry {
 	padding: 10px 20px;
 	overflow-x: auto;
+}
+
+.post .entry .zipcode {
+	position:relative;
+	display:block;
+	text-align:center;
 }
 
 .post .entry .info_card {
@@ -505,6 +548,27 @@ hr {
 }
 
 /* Buy Now buttons  Decoration for Products in Best Deal*/
+.vtd {
+	font-size: 14px;
+	margin-top: 10px;
+	text-align: left;
+	color: #000000;
+	width: 50%;
+	border: none !important;
+	padding-right: 40px !important;
+	border-bottom: 2px solid #000 !important;
+}
+
+
+.vbtn {
+	background:border-box;
+	margin-top:5px;
+	margin-bottom:10px;
+	background-color:darkseagreen;
+	border-radius:5px;
+	height:30px;
+}
+
 
 .btnbuy {
 	-webkit-border-radius: 5;
@@ -514,6 +578,22 @@ hr {
 	color: #ffffff;
 	font-size: 15px;
 	background: #006666;
+	padding: 5px 10px 5px 10px;
+	text-decoration: none;
+	display: block;
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.btnzip {
+	-webkit-border-radius: 5;
+	-moz-border-radius: 5;
+	border-radius: 5px;
+	font-family: Lucida Console;
+	color: #ffffff;
+	font-size: 15px;
+	//background: #006666;
 	padding: 5px 10px 5px 10px;
 	text-decoration: none;
 	display: block;
@@ -542,8 +622,13 @@ hr {
 
 /* Buy and Review Buttons Decoration for Products with :hover tags*/
 
-.btnbuy:hover,.btnreview:hover {
+.btnbuy:hover,.btnreview:hover{
 	background: #f09eaa;
+	text-decoration: none;
+}
+
+.vbtn:hover {
+	background: #ffffff;
 	text-decoration: none;
 }
 

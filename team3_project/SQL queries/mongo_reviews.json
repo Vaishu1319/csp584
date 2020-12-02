@@ -1,0 +1,53 @@
+[{
+  "_id": {
+    "$oid": "5fc52ea26f5cd36510085e3d"
+  },
+  "title": "ProviderReviews",
+  "Customername": "cust1",
+  "ProviderName": "Robin Tong",
+  "ProviderType": "Doctor",
+  "CustomerName": "Vaishnavi Manjunath",
+  "CustomerZIP": "60616",
+  "CustomerCity": "Chicago",
+  "CustomerState": "Illinois",
+  "CustomerAge": "26",
+  "CustomerGender": "Female",
+  "CustomerOccupation": "student",
+  "ReviewRating": 5,
+  "ReviewDate": "2020-11-30",
+  "ReviewText": "Good Doctor"
+},{
+  "_id": {
+    "$oid": "5fc52fc86f5cd36510085e41"
+  },
+  "title": "ProviderReviews",
+  "ProviderName": "Robin Tong",
+  "ProviderType": "Doctor",
+  "CustomerName": "Vaishnavi Manjunath",
+  "CustomerZIP": "60616",
+  "CustomerCity": "Chicago",
+  "CustomerState": "Illinois",
+  "CustomerAge": "26",
+  "CustomerGender": "Female",
+  "CustomerOccupation": "student",
+  "ReviewRating": 4,
+  "ReviewDate": "2020-11-30",
+  "ReviewText": "Okay Doctor"
+},{
+  "_id": {
+    "$oid": "5fc5305b6f5cd36510085e45"
+  },
+  "title": "ProviderReviews",
+  "ProviderName": "Robin Tong",
+  "ProviderType": "Doctor",
+  "CustomerName": "Vaishnavi Manjunath",
+  "CustomerZIP": "60616",
+  "CustomerCity": "Chicago",
+  "CustomerState": "Illinois",
+  "CustomerAge": "33",
+  "CustomerGender": "Female",
+  "CustomerOccupation": "Developer",
+  "ReviewRating": 4,
+  "ReviewDate": "2020-11-30",
+  "ReviewText": "Better consultation"
+}]
